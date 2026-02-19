@@ -1,21 +1,71 @@
-🧩 Floating Task Widget
+Here’s a clean, professional README you can directly paste into GitHub 👇
 
-A lightweight desktop productivity widget designed to stay always-on-top and help users manage daily tasks without switching between applications.
+---
 
-The app provides a minimal floating interface where users can quickly add, complete, and track tasks in real time. It focuses on simplicity, speed, and distraction-free productivity.
+# 🧩 Floating Task Widget
 
-✨ Features
+A lightweight desktop productivity widget that stays always-on-top, allowing users to manage daily tasks without switching between applications. Designed with simplicity and focus in mind, this tool brings task visibility directly to your workspace.
 
-Always-on-top draggable widget
+---
 
-Quick task add & delete
+## ✨ Features
 
-Checkbox-based completion tracking
+* 📌 Always-on-top floating window
+* 🖱️ Draggable and minimal interface
+* ➕ Quick task addition
+* ✅ Checkbox-based completion tracking
+* 📊 Real-time daily progress indicator
+* 🗂️ Lightweight and distraction-free
 
-Daily progress indicator
+---
 
-Clean and minimal UI
+## 🎯 Motivation
 
-🎯 Purpose
+Context switching between apps reduces productivity. This project aims to solve that by keeping essential daily tasks visible at all times through a compact desktop widget.
 
-Built to reduce context switching and improve daily task visibility by bringing productivity directly onto the desktop workspace.
+---
+
+## 🛠️ Tech Stack
+
+*(Update this section based on what you’re using)*
+
+* Frontend: HTML, CSS, JavaScript / React
+* Desktop Framework: Electron / Tauri / Tkinter
+* Local Storage / File-based persistence
+
+---
+
+## 🚀 Future Enhancements
+
+* 🔁 Daily task reset with history tracking
+* ⏳ Built-in Pomodoro timer
+* 📈 Weekly productivity analytics
+* 🌙 Theme customization
+* 🔐 Cloud sync & backup
+
+---
+
+## 📦 Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/floating-task-widget.git
+
+# Navigate to project folder
+cd floating-task-widget
+
+# Install dependencies
+npm install
+
+# Run the app
+npm start
+```
+
+*(Modify commands if you're using a different stack.)*
+
+---
+
+## 📌 Use Case
+
+Ideal for students, developers, and professionals who want a minimal, always-visible task manager without the overhead of full productivity suites.
+
