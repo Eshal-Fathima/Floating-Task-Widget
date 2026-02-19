@@ -1,6 +1,3 @@
-Here’s a clean, professional README you can directly paste into GitHub 👇
-
----
 
 # 🧩 Floating Task Widget
 
