@@ -1,68 +1,159 @@
+# 📋 Floating Productivity Widget
 
-# 🧩 Floating Task Widget
+A minimal, always-on-top desktop widget for daily task management. Built with **React + Vite + Tauri + MySQL** for permanent data persistence and analytics.
 
-A lightweight desktop productivity widget that stays always-on-top, allowing users to manage daily tasks without switching between applications. Designed with simplicity and focus in mind, this tool brings task visibility directly to your workspace.
+![Tech Stack](https://img.shields.io/badge/React-18-blue) ![Tech Stack](https://img.shields.io/badge/Vite-6-purple) ![Tech Stack](https://img.shields.io/badge/Tauri-1.x-orange) ![Tech Stack](https://img.shields.io/badge/MySQL-8-blue)
 
 ---
 
 ## ✨ Features
 
-* 📌 Always-on-top floating window
-* 🖱️ Draggable and minimal interface
-* ➕ Quick task addition
-* ✅ Checkbox-based completion tracking
-* 📊 Real-time daily progress indicator
-* 🗂️ Lightweight and distraction-free
+- **Always-on-top** floating widget (350×500px)
+- **Add tasks** with Enter key
+- **Complete tasks** with checkbox (auto-calculates duration)
+- **Soft-delete** — tasks are archived, never permanently deleted
+- **Progress bar** — real-time completed/total ratio
+- **Persistent storage** — all data in MySQL, survives app restarts
+- **Today's tasks** — only loads current day's tasks on startup
+- **Analytics-ready** — every task stored permanently with timestamps
 
 ---
 
-## 🎯 Motivation
+## 🧱 Tech Stack
 
-Context switching between apps reduces productivity. This project aims to solve that by keeping essential daily tasks visible at all times through a compact desktop widget.
-
----
-
-## 🛠️ Tech Stack
-
-*(Update this section based on what you’re using)*
-
-* Frontend: HTML, CSS, JavaScript / React
-* Desktop Framework: Electron / Tauri / Tkinter
-* Local Storage / File-based persistence
+| Layer    | Technology          |
+|----------|---------------------|
+| Frontend | React 18 + Vite 6   |
+| Backend  | Node.js + Express   |
+| Database | MySQL               |
+| Desktop  | Tauri (optional)    |
 
 ---
 
-## 🚀 Future Enhancements
+## 📂 Project Structure
 
-* 🔁 Daily task reset with history tracking
-* ⏳ Built-in Pomodoro timer
-* 📈 Weekly productivity analytics
-* 🌙 Theme customization
-* 🔐 Cloud sync & backup
-
----
-
-## 📦 Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/your-username/floating-task-widget.git
-
-# Navigate to project folder
-cd floating-task-widget
-
-# Install dependencies
-npm install
-
-# Run the app
-npm start
+```
+├── frontend/
+│   ├── components/
+│   │   ├── TaskInput.jsx
+│   │   ├── TaskList.jsx
+│   │   └── ProgressBar.jsx
+│   ├── services/
+│   │   └── api.js
+│   ├── App.jsx
+│   ├── App.css
+│   └── main.jsx
+├── backend/
+│   ├── db.js
+│   ├── taskController.js
+│   ├── routes.js
+│   └── server.js
+├── src-tauri/
+│   └── tauri.conf.json
+├── setup.sql
+├── .env.example
+├── .gitignore
+├── package.json
+└── README.md
 ```
 
-*(Modify commands if you're using a different stack.)*
+---
+
+## 🗄 MySQL Setup
+
+### 1. Install MySQL
+
+Make sure MySQL 8.x is installed and running.
+
+### 2. Create database and table
+
+Run the setup script:
+
+```bash
+mysql -u root -p < setup.sql
+```
+
+Or manually in MySQL:
+
+```sql
+CREATE DATABASE IF NOT EXISTS floating_widget
+  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+USE floating_widget;
+
+CREATE TABLE IF NOT EXISTS tasks (
+  id              INT PRIMARY KEY AUTO_INCREMENT,
+  title           VARCHAR(255) NOT NULL,
+  category        VARCHAR(100),
+  created_at      DATETIME DEFAULT CURRENT_TIMESTAMP,
+  completed_at    DATETIME,
+  status          ENUM('pending', 'completed', 'archived') DEFAULT 'pending',
+  duration_minutes INT
+);
+```
+
+### 3. Configure environment variables
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` with your MySQL credentials:
+
+```
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=floating_widget
+DB_PORT=3306
+```
 
 ---
 
-## 📌 Use Case
+## 🚀 How to Run Locally
 
-Ideal for students, developers, and professionals who want a minimal, always-visible task manager without the overhead of full productivity suites.
+### Install dependencies
 
+```bash
+npm install
+```
+
+### Start both servers (backend + frontend)
+
+```bash
+npm run dev
+```
+
+This starts:
+- **Backend** → `http://localhost:3001`
+- **Frontend** → `http://localhost:5173`
+
+### Run as desktop app (optional, requires Rust + Tauri CLI)
+
+```bash
+npm run tauri:dev
+```
+
+---
+
+## 🔒 API Endpoints
+
+| Method | Endpoint                   | Description              |
+|--------|----------------------------|--------------------------|
+| GET    | `/api/tasks`               | Fetch today's tasks      |
+| POST   | `/api/tasks`               | Add a new task           |
+| PUT    | `/api/tasks/:id/complete`  | Mark task as completed   |
+| PUT    | `/api/tasks/:id/archive`   | Soft-delete (archive)    |
+| GET    | `/api/health`              | Health check             |
+
+---
+
+## 🔐 Security Note
+
+> **⚠️ Never commit your `.env` file.** It contains database credentials. The `.gitignore` is configured to exclude it. Always use `.env.example` as a template for other developers.
+
+---
+
+## 📜 License
+
+MIT
