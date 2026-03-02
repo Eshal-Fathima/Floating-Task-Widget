@@ -7,7 +7,7 @@ const express = require('express');
 const router = express.Router();
 const { getTodayTasks, addTask, completeTask, archiveTask } = require('./taskController');
 
-// GET    /api/tasks              — Fetch today's pending + completed tasks
+// GET    /api/tasks              — Fetch all pending + completed tasks (no date filter)
 router.get('/tasks', getTodayTasks);
 
 // POST   /api/tasks              — Add a new task

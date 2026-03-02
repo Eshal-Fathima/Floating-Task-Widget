@@ -56,10 +56,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
-        "resizable": true,
+        "height": 560,
+        "resizable": false,
         "title": "floating-productivity-widget",
-        "width": 800
+        "width": 420
       }
     ]
   }

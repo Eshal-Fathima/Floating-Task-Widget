@@ -12,13 +12,14 @@ import './App.css';
 
 /**
  * App Component
- * Main widget: loads today's tasks on mount, manages state,
- * and wires up child components.
+ * Main widget: loads all non-archived tasks on mount, manages state,
+ * and wires up child components. Supports light/dark theme toggle.
  */
 export default function App() {
     const [tasks, setTasks] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [theme, setTheme] = useState('dark');
 
     // Load tasks from MySQL on mount
     useEffect(() => {
@@ -74,24 +75,37 @@ export default function App() {
         }
     }
 
+    function toggleTheme() {
+        setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
+    }
+
     return (
-        <div className="widget">
+        <div className="widget" data-theme={theme}>
             {/* Custom drag region / title bar */}
             <header className="widget-header" data-tauri-drag-region>
                 <h1>📋 Tasks</h1>
-                <span className="date-label">
-                    {new Date().toLocaleDateString('en-US', {
-                        weekday: 'short',
-                        month: 'short',
-                        day: 'numeric',
-                    })}
-                </span>
+                <div className="header-right">
+                    <span className="date-label">
+                        {new Date().toLocaleDateString('en-US', {
+                            weekday: 'short',
+                            month: 'short',
+                            day: 'numeric',
+                        })}
+                    </span>
+                    <button
+                        className="theme-toggle"
+                        onClick={toggleTheme}
+                        title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+                    >
+                        {theme === 'dark' ? '☀️' : '🌙'}
+                    </button>
+                </div>
             </header>
 
             {/* Error banner */}
             {error && <div className="error-banner">{error}</div>}
 
-            {/* Progress bar */}
+            {/* Summary + progress bar */}
             <ProgressBar tasks={tasks} />
 
             {/* Task input */}

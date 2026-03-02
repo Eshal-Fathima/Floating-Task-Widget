@@ -1,5 +1,6 @@
 /* ============================================
    Floating Productivity Widget — Styles
+   Professional neutral theme (dark & light)
    ============================================ */
 
 /* --- Reset & Base --- */
@@ -11,28 +12,43 @@
   box-sizing: border-box;
 }
 
-:root {
-  --bg-primary: #1a1b2e;
-  --bg-secondary: #242640;
-  --bg-card: #2a2d4a;
-  --accent: #7c5cfc;
-  --accent-glow: rgba(124, 92, 252, 0.3);
-  --success: #4ade80;
+/* --- Dark theme (default) --- */
+:root,
+[data-theme="dark"] {
+  --bg-primary: #0f172a;
+  --bg-card: #1e293b;
+  --bg-secondary: #172033;
+  --accent: #3b82f6;
+  --success: #22c55e;
   --danger: #f87171;
-  --text-primary: #e8e8f0;
-  --text-secondary: #9395b0;
-  --text-muted: #6b6d85;
-  --border: rgba(255, 255, 255, 0.06);
-  --radius: 10px;
-  --transition: 0.2s ease;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: #334155;
+  --radius: 8px;
+  --transition: 0.18s ease;
+}
+
+/* --- Light theme --- */
+[data-theme="light"] {
+  --bg-primary: #f3f4f6;
+  --bg-card: #ffffff;
+  --bg-secondary: #f9fafb;
+  --accent: #2563eb;
+  --success: #16a34a;
+  --danger: #dc2626;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --border: #e5e7eb;
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: var(--bg-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: transparent;
   color: var(--text-primary);
-  width: 350px;
-  height: 500px;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
 }
@@ -47,8 +63,9 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 0;
-  background: linear-gradient(165deg, var(--bg-primary) 0%, #151629 100%);
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  overflow: hidden;
 }
 
 /* --- Header / Drag Region --- */
@@ -56,10 +73,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 18px 12px;
+  padding: 14px 16px 12px;
   cursor: grab;
   user-select: none;
   border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--bg-card);
 }
 
 .widget-header:active {
@@ -67,9 +86,16 @@ body {
 }
 
 .widget-header h1 {
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: -0.3px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.2px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .date-label {
@@ -77,64 +103,97 @@ body {
   color: var(--text-muted);
   font-weight: 500;
   background: var(--bg-secondary);
-  padding: 4px 10px;
+  border: 1px solid var(--border);
+  padding: 3px 9px;
   border-radius: 20px;
+}
+
+/* --- Theme Toggle Button --- */
+.theme-toggle {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  width: 28px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition);
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.theme-toggle:hover {
+  background: var(--border);
 }
 
 /* --- Error Banner --- */
 .error-banner {
-  background: rgba(248, 113, 113, 0.12);
+  background: rgba(220, 38, 38, 0.08);
   color: var(--danger);
   font-size: 11px;
-  padding: 8px 18px;
-  border-bottom: 1px solid rgba(248, 113, 113, 0.15);
+  padding: 7px 16px;
+  border-bottom: 1px solid rgba(220, 38, 38, 0.15);
+  flex-shrink: 0;
 }
 
-/* --- Progress Bar --- */
+/* --- Progress / Summary --- */
 .progress-container {
-  padding: 12px 18px;
+  padding: 12px 16px 10px;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
 }
 
 .progress-info {
   display: flex;
   justify-content: space-between;
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-bottom: 6px;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
   font-weight: 500;
 }
 
+.progress-info strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
 .progress-bar {
-  height: 5px;
+  height: 4px;
   background: var(--bg-secondary);
   border-radius: 10px;
   overflow: hidden;
+  border: 1px solid var(--border);
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), #a78bfa);
+  background: var(--accent);
   border-radius: 10px;
   transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 0 12px var(--accent-glow);
 }
 
 /* --- Task Input --- */
 .task-input {
-  padding: 0 18px 12px;
+  padding: 10px 16px;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
 }
 
 .task-input input {
   width: 100%;
-  padding: 10px 14px;
+  padding: 9px 12px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: var(--bg-secondary);
+  background: var(--bg-card);
   color: var(--text-primary);
   font-size: 13px;
   font-family: inherit;
   outline: none;
-  transition: border-color var(--transition), box-shadow var(--transition);
+  transition: border-color var(--transition);
 }
 
 .task-input input::placeholder {
@@ -143,28 +202,46 @@ body {
 
 .task-input input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+/* --- Task List Wrapper (scrollable) --- */
+.task-list-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 0 12px;
+}
+
+.task-list-wrapper::-webkit-scrollbar {
+  width: 4px;
+}
+
+.task-list-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.task-list-wrapper::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+/* --- Section Headers --- */
+.task-section {
+  margin-bottom: 4px;
+}
+
+.section-header {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--text-muted);
+  padding: 8px 16px 4px;
 }
 
 /* --- Task List --- */
 .task-list {
   list-style: none;
-  flex: 1;
-  overflow-y: auto;
-  padding: 0 18px 18px;
-}
-
-.task-list::-webkit-scrollbar {
-  width: 4px;
-}
-
-.task-list::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.task-list::-webkit-scrollbar-thumb {
-  background: var(--bg-card);
-  border-radius: 4px;
+  padding: 0 12px;
 }
 
 /* --- Task Item --- */
@@ -172,19 +249,27 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 12px;
-  margin-bottom: 6px;
+  padding: 9px 10px;
+  margin-bottom: 4px;
   background: var(--bg-card);
   border-radius: var(--radius);
   border: 1px solid var(--border);
-  transition: transform var(--transition), opacity var(--transition);
-  animation: slideIn 0.25s ease;
+  transition: background var(--transition);
+  animation: slideIn 0.2s ease;
+}
+
+.task-item:hover {
+  background: var(--bg-secondary);
+}
+
+.task-item.completed {
+  opacity: 0.6;
 }
 
 @keyframes slideIn {
   from {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(-6px);
   }
   to {
     opacity: 1;
@@ -192,12 +277,52 @@ body {
   }
 }
 
-.task-item:hover {
-  transform: translateX(2px);
+/* --- Task Checkbox --- */
+.task-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--text-muted);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--success);
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color var(--transition), background var(--transition);
 }
 
-.task-item.completed {
-  opacity: 0.55;
+.task-checkbox:hover:not(:disabled) {
+  border-color: var(--success);
+  background: rgba(34, 197, 94, 0.08);
+}
+
+.task-checkbox:disabled {
+  border-color: var(--success);
+  color: var(--success);
+  cursor: default;
+}
+
+/* --- Task Info Block (title + date stacked) --- */
+.task-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+/* --- Task Title --- */
+.task-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
 }
 
 .task-item.completed .task-title {
@@ -205,51 +330,22 @@ body {
   color: var(--text-muted);
 }
 
-/* --- Task Checkbox --- */
-.task-checkbox {
-  width: 22px;
-  height: 22px;
-  border: 2px solid var(--text-muted);
-  border-radius: 50%;
-  background: transparent;
-  color: var(--success);
-  font-size: 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: all var(--transition);
-}
-
-.task-checkbox:hover:not(:disabled) {
-  border-color: var(--success);
-  background: rgba(74, 222, 128, 0.1);
-}
-
-.task-checkbox:disabled {
-  border-color: var(--success);
-  background: rgba(74, 222, 128, 0.15);
-  cursor: default;
-}
-
-/* --- Task Title --- */
-.task-title {
-  flex: 1;
-  font-size: 13px;
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* --- Task Date --- */
+.task-date {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 400;
+  line-height: 1;
 }
 
 /* --- Duration Badge --- */
 .task-duration {
   font-size: 10px;
   color: var(--accent);
-  background: rgba(124, 92, 252, 0.12);
-  padding: 2px 7px;
-  border-radius: 12px;
+  background: rgba(59, 130, 246, 0.10);
+  border: 1px solid rgba(59, 130, 246, 0.20);
+  padding: 2px 6px;
+  border-radius: 10px;
   font-weight: 600;
   flex-shrink: 0;
 }
@@ -259,12 +355,12 @@ body {
   background: transparent;
   border: none;
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 11px;
   cursor: pointer;
-  padding: 4px;
+  padding: 3px 5px;
   border-radius: 4px;
   opacity: 0;
-  transition: all var(--transition);
+  transition: opacity var(--transition), color var(--transition), background var(--transition);
   flex-shrink: 0;
 }
 
@@ -274,7 +370,7 @@ body {
 
 .task-archive:hover {
   color: var(--danger);
-  background: rgba(248, 113, 113, 0.1);
+  background: rgba(220, 38, 38, 0.08);
 }
 
 /* --- Empty & Loading Messages --- */
@@ -283,6 +379,6 @@ body {
   text-align: center;
   color: var(--text-muted);
   font-size: 13px;
-  padding: 40px 18px;
+  padding: 40px 16px;
   font-weight: 500;
 }

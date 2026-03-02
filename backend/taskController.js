@@ -6,16 +6,17 @@
 const pool = require('./db');
 
 /**
- * Get today's tasks (pending + completed only, no archived).
- * Filters by created_at date matching today.
+ * Get all tasks (pending + completed, no archived).
+ * Returns tasks across all dates, pending tasks shown first.
  */
 async function getTodayTasks(req, res) {
     try {
         const [rows] = await pool.query(
             `SELECT * FROM tasks
-       WHERE DATE(created_at) = CURDATE()
-         AND status IN ('pending', 'completed')
-       ORDER BY created_at DESC`
+       WHERE status != 'archived'
+       ORDER BY
+         status = 'pending' DESC,
+         created_at DESC`
         );
         res.json(rows);
     } catch (error) {
