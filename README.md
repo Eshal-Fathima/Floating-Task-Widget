@@ -2,7 +2,7 @@
 
 A minimal, always-on-top desktop widget for daily task management. Built with **React + Vite + Tauri + MySQL** for permanent data persistence and analytics.
 
-![Tech Stack](https://img.shields.io/badge/React-18-blue) ![Tech Stack](https://img.shields.io/badge/Vite-6-purple) ![Tech Stack](https://img.shields.io/badge/Tauri-1.x-orange) ![Tech Stack](https://img.shields.io/badge/MySQL-8-blue)
+![Tech Stack](https://img.shields.io/badge/React-18-blue) ![Tech Stack](https://img.shields.io/badge/Vite-6-blue) ![Tech Stack](https://img.shields.io/badge/Tauri-1.x-blue) ![Tech Stack](https://img.shields.io/badge/MySQL-8-blue)
 
 ---
 
