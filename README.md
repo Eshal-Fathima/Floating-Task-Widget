@@ -6,7 +6,7 @@ A minimal, always-on-top desktop widget for daily task management. Built with **
 
 ---
 
-## ✨ Features
+## Features
 
 - **Always-on-top** floating widget (350×500px)
 - **Add tasks** with Enter key
@@ -19,7 +19,7 @@ A minimal, always-on-top desktop widget for daily task management. Built with **
 
 ---
 
-## 🧱 Tech Stack
+## Tech Stack
 
 | Layer    | Technology          |
 |----------|---------------------|
@@ -30,7 +30,7 @@ A minimal, always-on-top desktop widget for daily task management. Built with **
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 ├── frontend/
@@ -59,7 +59,7 @@ A minimal, always-on-top desktop widget for daily task management. Built with **
 
 ---
 
-## 🗄 MySQL Setup
+## MySQL Setup
 
 ### 1. Install MySQL
 
@@ -110,7 +110,7 @@ DB_PORT=3306
 
 ---
 
-## 🚀 How to Run Locally
+## How to Run Locally
 
 ### Install dependencies
 
@@ -136,7 +136,7 @@ npm run tauri:dev
 
 ---
 
-## 🔒 API Endpoints
+## API Endpoints
 
 | Method | Endpoint                   | Description              |
 |--------|----------------------------|--------------------------|
@@ -148,12 +148,9 @@ npm run tauri:dev
 
 ---
 
-## 🔐 Security Note
+## Security Note
 
 > **⚠️ Never commit your `.env` file.** It contains database credentials. The `.gitignore` is configured to exclude it. Always use `.env.example` as a template for other developers.
 
 ---
 
-## 📜 License
-
-MIT
