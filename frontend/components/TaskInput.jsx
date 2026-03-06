@@ -7,18 +7,18 @@ import { useState } from 'react';
 export default function TaskInput({ onAdd }) {
     const [title, setTitle] = useState('');
 
-    const handleKeyDown = async (e) => {
+    async function handleKeyDown(e) {
         if (e.key === 'Enter' && title.trim()) {
             await onAdd(title.trim());
             setTitle('');
         }
-    };
+    }
 
     return (
         <div className="task-input">
             <input
                 type="text"
-                placeholder="Add a task... press Enter"
+                placeholder="Add a task… press Enter"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 onKeyDown={handleKeyDown}
