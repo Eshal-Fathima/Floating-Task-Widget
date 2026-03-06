@@ -10,21 +10,13 @@ import {
 } from './services/api';
 import './App.css';
 
-/**
- * App Component
- * Main widget: loads all non-archived tasks on mount, manages state,
- * and wires up child components. Supports light/dark theme toggle.
- */
 export default function App() {
     const [tasks, setTasks] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [theme, setTheme] = useState('dark');
 
-    // Load tasks from MySQL on mount
-    useEffect(() => {
-        loadTasks();
-    }, []);
+    useEffect(() => { loadTasks(); }, []);
 
     async function loadTasks() {
         try {
@@ -39,7 +31,6 @@ export default function App() {
         }
     }
 
-    // Add a new task
     async function handleAdd(title) {
         try {
             setError(null);
@@ -51,7 +42,6 @@ export default function App() {
         }
     }
 
-    // Mark a task as completed
     async function handleComplete(id) {
         try {
             setError(null);
@@ -63,7 +53,6 @@ export default function App() {
         }
     }
 
-    // Archive (soft-delete) a task
     async function handleArchive(id) {
         try {
             setError(null);
@@ -81,17 +70,22 @@ export default function App() {
 
     return (
         <div className="widget" data-theme={theme}>
-            {/* Custom drag region / title bar */}
-            <header className="widget-header" data-tauri-drag-region>
-                <h1>📋 Tasks</h1>
-                <div className="header-right">
-                    <span className="date-label">
-                        {new Date().toLocaleDateString('en-US', {
-                            weekday: 'short',
-                            month: 'short',
-                            day: 'numeric',
-                        })}
-                    </span>
+            {/* Ambient background orbs — dark mode only */}
+            <div className="orb orb-1" />
+            <div className="orb orb-2" />
+            <div className="orb orb-3" />
+
+            <div className="widget-inner">
+                {/* Header / drag region */}
+                <header className="widget-header" data-tauri-drag-region>
+                    <div className="header-left">
+                        <h1>📋 Tasks</h1>
+                        <span className="date-label">
+                            {new Date().toLocaleDateString('en-US', {
+                                weekday: 'short', month: 'short', day: 'numeric',
+                            })}
+                        </span>
+                    </div>
                     <button
                         className="theme-toggle"
                         onClick={toggleTheme}
@@ -99,28 +93,28 @@ export default function App() {
                     >
                         {theme === 'dark' ? '☀️' : '🌙'}
                     </button>
-                </div>
-            </header>
+                </header>
 
-            {/* Error banner */}
-            {error && <div className="error-banner">{error}</div>}
+                {/* Error banner */}
+                {error && <div className="error-banner">{error}</div>}
 
-            {/* Summary + progress bar */}
-            <ProgressBar tasks={tasks} />
+                {/* Progress */}
+                <ProgressBar tasks={tasks} />
 
-            {/* Task input */}
-            <TaskInput onAdd={handleAdd} />
+                {/* Input */}
+                <TaskInput onAdd={handleAdd} />
 
-            {/* Task list */}
-            {loading ? (
-                <p className="loading-message">Loading tasks...</p>
-            ) : (
-                <TaskList
-                    tasks={tasks}
-                    onComplete={handleComplete}
-                    onArchive={handleArchive}
-                />
-            )}
+                {/* Task list */}
+                {loading ? (
+                    <p className="loading-message">Loading tasks…</p>
+                ) : (
+                    <TaskList
+                        tasks={tasks}
+                        onComplete={handleComplete}
+                        onArchive={handleArchive}
+                    />
+                )}
+            </div>
         </div>
     );
 }
