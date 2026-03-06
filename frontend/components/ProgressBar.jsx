@@ -1,6 +1,6 @@
 /**
  * ProgressBar Component
- * Displays a summary line (Pending · Done · %) and a visual progress bar.
+ * Stat chips (Pending / Done) + amber progress bar.
  */
 export default function ProgressBar({ tasks }) {
     const total = tasks.length;
@@ -10,18 +10,25 @@ export default function ProgressBar({ tasks }) {
 
     return (
         <div className="progress-container">
+            {/* Stat chips */}
+            <div className="stats-row">
+                <div className="stat-chip amber">
+                    <div className="stat-num">{pending}</div>
+                    <div className="stat-label">Pending</div>
+                </div>
+                <div className="stat-chip green">
+                    <div className="stat-num">{completed}</div>
+                    <div className="stat-label">Done</div>
+                </div>
+            </div>
+
+            {/* Progress bar */}
             <div className="progress-info">
-                <span>
-                    <strong>{pending}</strong> Pending &nbsp;·&nbsp;
-                    <strong>{completed}</strong> Done
-                </span>
-                <span>{percent}%</span>
+                <span className="p-label">Progress</span>
+                <span className="p-pct">{percent}%</span>
             </div>
             <div className="progress-bar">
-                <div
-                    className="progress-fill"
-                    style={{ width: `${percent}%` }}
-                />
+                <div className="progress-fill" style={{ width: `${percent}%` }} />
             </div>
         </div>
     );
