@@ -148,7 +148,7 @@ npm run tauri:dev
 
 ---
 
-## Security Note
+## Security Note (Important)
 
 > **⚠️ Never commit your `.env` file.** It contains database credentials. The `.gitignore` is configured to exclude it. Always use `.env.example` as a template for other developers.
 
