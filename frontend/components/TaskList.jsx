@@ -61,7 +61,14 @@ function TaskItem({ task, onComplete, onArchive }) {
             </div>
 
             {done && task.duration_minutes != null && (
-                <span className="task-duration">{task.duration_minutes}m</span>
+                <span className="task-duration">
+                    {task.duration_minutes < 60
+                        ? `${task.duration_minutes}m`
+                        : task.duration_minutes < 1440
+                            ? `${(task.duration_minutes / 60).toFixed(1)}h`
+                            : `${(task.duration_minutes / 1440).toFixed(1)}d`
+                    }
+                </span>
             )}
 
             <button
