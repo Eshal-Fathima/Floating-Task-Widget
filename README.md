@@ -221,24 +221,3 @@ npm run tauri dev
 > Always use `.env.example` as a template for other developers.
 
 ---
-
-## 🧪 Common Issues
-
-**Backend not connecting?**
-- Make sure MySQL is running
-- Double-check your `.env` credentials
-- Confirm the database exists: `mysql -u root -p -e "SHOW DATABASES;"`
-
-**Tasks showing in all folders?**
-- Make sure your `migration.sql` includes the `folder_id` column in the `tasks` table
-- Re-run: `mysql -u root -p floating_widget < migration.sql`
-
-**Tauri build failing?**
-- Ensure Rust is installed: `rustc --version`
-- Run `npm run tauri info` to diagnose
-
----
-
-## 🙌 Author
-
-Made by [@Eshal-Fathima](https://github.com/Eshal-Fathima)
