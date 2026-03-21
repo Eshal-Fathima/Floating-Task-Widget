@@ -1,57 +1,68 @@
-# 📋 Floating Productivity Widget
+# 🪄 Floating Task Widget
 
-A minimal, always-on-top desktop widget for daily task management. Built with **React + Vite + Tauri + MySQL** for permanent data persistence and analytics.
+A lightweight, always-on-top desktop task manager built with **Tauri + React + Node.js + MySQL**. Organize tasks into folders, track completion time, and monitor progress — all from a sleek floating widget on your desktop.
 
 ![Tech Stack](https://img.shields.io/badge/React-18-blue) ![Tech Stack](https://img.shields.io/badge/Vite-6-orange) ![Tech Stack](https://img.shields.io/badge/Tauri-1.x-purple) ![Tech Stack](https://img.shields.io/badge/MySQL-8-blue)
 
 ---
 
-## Features
+## 📸 Screenshot
 
-- **Always-on-top** floating widget (350×500px)
-- **Add tasks** with Enter key
-- **Complete tasks** with checkbox (auto-calculates duration)
-- **Soft-delete** — tasks are archived, never permanently deleted
-- **Progress bar** — real-time completed/total ratio
-- **Persistent storage** — all data in MySQL, survives app restarts
-- **Today's tasks** — only loads current day's tasks on startup
-- **Analytics-ready** — every task stored permanently with timestamps
+![Floating Task Widget](screenshot.png)
 
 ---
 
-## Tech Stack
+## ✨ Features
 
-| Layer    | Technology          |
-|----------|---------------------|
-| Frontend | React 18 + Vite 6   |
-| Backend  | Node.js + Express   |
-| Database | MySQL               |
-| Desktop  | Tauri (optional)    |
+- 🪟 Always-on-top floating widget (350×500px)
+- 📁 Folder-based task organization with color labels
+- ➕ Add tasks with the **Enter** key
+- ✅ Complete tasks with checkbox — auto-calculates duration
+- 🗂 Soft-delete — tasks are archived, never permanently deleted
+- 📊 Progress bar — real-time completed/total ratio
+- 💾 Persistent storage — all data in MySQL, survives app restarts
+- 🕐 Smart duration display (minutes → hours → days)
+- 📈 Analytics-ready — every task stored permanently with timestamps
+- 🌗 Dark / Light theme toggle
 
 ---
 
-## Project Structure
+## 🛠 Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React 18 + Vite 6 |
+| Backend | Node.js + Express |
+| Database | MySQL 8.x |
+| Desktop | Tauri (Rust) — optional |
+
+---
+
+## 📁 Project Structure
 
 ```
+Floating-Task-Widget/
 ├── frontend/
 │   ├── components/
+│   │   ├── ProgressBar.jsx
+│   │   ├── Sidebar.jsx
 │   │   ├── TaskInput.jsx
-│   │   ├── TaskList.jsx
-│   │   └── ProgressBar.jsx
+│   │   └── TaskList.jsx
 │   ├── services/
-│   │   └── api.js
+│   │   └── api.js          # HTTP requests to backend
 │   ├── App.jsx
 │   ├── App.css
 │   └── main.jsx
 ├── backend/
-│   ├── db.js
-│   ├── taskController.js
-│   ├── routes.js
-│   └── server.js
-├── src-tauri/
+│   ├── db.js               # MySQL connection pool
+│   ├── routes.js           # Express API routes
+│   ├── server.js           # Express server entry point
+│   └── taskController.js   # Task & folder CRUD logic
+├── src-tauri/              # Tauri (Rust) desktop config
 │   └── tauri.conf.json
-├── setup.sql
-├── .env.example
+├── migration.sql           # Database migrations
+├── setup.sql               # Initial DB setup
+├── .env.example            # Environment variable template
 ├── .gitignore
 ├── package.json
 └── README.md
@@ -59,18 +70,33 @@ A minimal, always-on-top desktop widget for daily task management. Built with **
 
 ---
 
-## MySQL Setup
+## ⚙️ Prerequisites
 
-### 1. Install MySQL
+Make sure you have the following installed:
 
-Make sure MySQL 8.x is installed and running.
+- [Node.js](https://nodejs.org/) v18 or above
+- [MySQL](https://www.mysql.com/) v8 or above
+- [Rust](https://www.rust-lang.org/tools/install) *(only needed for Tauri desktop build)*
+- [Tauri CLI](https://tauri.app/v1/guides/getting-started/prerequisites) *(only needed for Tauri desktop build)*
 
-### 2. Create database and table
+---
 
-Run the setup script:
+## 🚀 Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/Eshal-Fathima/Floating-Task-Widget.git
+cd Floating-Task-Widget
+```
+
+### 2. Set Up the Database
+
+Open your **terminal** (not the MySQL shell) and run:
 
 ```bash
 mysql -u root -p < setup.sql
+mysql -u root -p floating_widget < migration.sql
 ```
 
 Or manually in MySQL:
@@ -81,18 +107,27 @@ CREATE DATABASE IF NOT EXISTS floating_widget
 
 USE floating_widget;
 
+CREATE TABLE IF NOT EXISTS folders (
+  id         INT PRIMARY KEY AUTO_INCREMENT,
+  name       VARCHAR(100) NOT NULL,
+  color      VARCHAR(20) DEFAULT '#FFAD0D',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS tasks (
-  id              INT PRIMARY KEY AUTO_INCREMENT,
-  title           VARCHAR(255) NOT NULL,
-  category        VARCHAR(100),
-  created_at      DATETIME DEFAULT CURRENT_TIMESTAMP,
-  completed_at    DATETIME,
-  status          ENUM('pending', 'completed', 'archived') DEFAULT 'pending',
-  duration_minutes INT
+  id               INT PRIMARY KEY AUTO_INCREMENT,
+  title            VARCHAR(255) NOT NULL,
+  category         VARCHAR(100),
+  folder_id        INT,
+  created_at       DATETIME DEFAULT CURRENT_TIMESTAMP,
+  completed_at     DATETIME,
+  status           ENUM('pending', 'completed', 'archived') DEFAULT 'pending',
+  duration_minutes INT,
+  FOREIGN KEY (folder_id) REFERENCES folders(id) ON DELETE SET NULL
 );
 ```
 
-### 3. Configure environment variables
+### 3. Configure Environment Variables
 
 ```bash
 cp .env.example .env
@@ -100,57 +135,110 @@ cp .env.example .env
 
 Edit `.env` with your MySQL credentials:
 
-```
+```env
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=your_password
 DB_NAME=floating_widget
 DB_PORT=3306
+PORT=3001
 ```
 
----
-
-## How to Run Locally
-
-### Install dependencies
+### 4. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### Start both servers (backend + frontend)
+### 5. Start the App
+
+**Run as a web app (development):**
 
 ```bash
 npm run dev
 ```
 
 This starts:
-- **Backend** → `http://localhost:3001`
-- **Frontend** → `http://localhost:5173`
+- Backend → `http://localhost:3001`
+- Frontend → `http://localhost:5173`
 
-### Run as desktop app (optional, requires Rust + Tauri CLI)
+**Run as a desktop app (requires Rust + Tauri CLI):**
 
 ```bash
-npm run tauri:dev
+npm run tauri dev
 ```
 
 ---
 
-## API Endpoints
+## 🗃 Database Schema
 
-| Method | Endpoint                   | Description              |
-|--------|----------------------------|--------------------------|
-| GET    | `/api/tasks`               | Fetch today's tasks      |
-| POST   | `/api/tasks`               | Add a new task           |
-| PUT    | `/api/tasks/:id/complete`  | Mark task as completed   |
-| PUT    | `/api/tasks/:id/archive`   | Soft-delete (archive)    |
-| GET    | `/api/health`              | Health check             |
+### `folders`
+| Column | Type | Description |
+|--------|------|-------------|
+| id | INT (PK) | Auto-increment |
+| name | VARCHAR | Folder name |
+| color | VARCHAR | Hex color code |
+| created_at | TIMESTAMP | Auto-set |
+
+### `tasks`
+| Column | Type | Description |
+|--------|------|-------------|
+| id | INT (PK) | Auto-increment |
+| title | VARCHAR | Task title |
+| category | VARCHAR | Optional category tag |
+| folder_id | INT (FK) | Links to folders table |
+| status | ENUM | `pending`, `completed`, `archived` |
+| created_at | DATETIME | Auto-set |
+| completed_at | DATETIME | Set on completion |
+| duration_minutes | INT | Auto-calculated on completion |
 
 ---
 
-## Security Note (Important)
+## 📡 API Endpoints
 
-> **⚠️ Never commit your `.env` file.** It contains database credentials. The `.gitignore` is configured to exclude it. Always use `.env.example` as a template for other developers.
+### Tasks
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/tasks` | Fetch all tasks (add `?folder_id=` to filter by folder) |
+| POST | `/api/tasks` | Add a new task |
+| PUT | `/api/tasks/:id/complete` | Mark task as completed |
+| PUT | `/api/tasks/:id/archive` | Soft-delete (archive) a task |
+| GET | `/api/health` | Health check |
+
+### Folders
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/folders` | Fetch all folders |
+| POST | `/api/folders` | Create a new folder |
+| DELETE | `/api/folders/:id` | Delete a folder (tasks become un-foldered, not deleted) |
 
 ---
 
+## 🔒 Security Note
+
+> ⚠️ **Never commit your `.env` file.** It contains database credentials.  
+> The `.gitignore` is configured to exclude it.  
+> Always use `.env.example` as a template for other developers.
+
+---
+
+## 🧪 Common Issues
+
+**Backend not connecting?**
+- Make sure MySQL is running
+- Double-check your `.env` credentials
+- Confirm the database exists: `mysql -u root -p -e "SHOW DATABASES;"`
+
+**Tasks showing in all folders?**
+- Make sure your `migration.sql` includes the `folder_id` column in the `tasks` table
+- Re-run: `mysql -u root -p floating_widget < migration.sql`
+
+**Tauri build failing?**
+- Ensure Rust is installed: `rustc --version`
+- Run `npm run tauri info` to diagnose
+
+---
+
+## 🙌 Author
+
+Made by [@Eshal-Fathima](https://github.com/Eshal-Fathima)
