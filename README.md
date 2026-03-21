@@ -8,7 +8,7 @@ A lightweight, always-on-top desktop task manager built with **Tauri + React + N
 
 ## 📸 Screenshot
 
-![Floating Task Widget](screenshot.png)
+<img src="screenshot.png" width="350" alt="Floating Task Widget"/>
 
 ---
 
